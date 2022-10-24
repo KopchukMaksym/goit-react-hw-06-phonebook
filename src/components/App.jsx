@@ -1,41 +1,18 @@
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { addContact, deleteContact } from 'redux/contactSlice';
+import { filterContact } from 'redux/filterSlice';
+import { getContacts, getFilter } from 'redux/selectors';
 import { ContactForm } from './ContactForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import s from './FormStyles.module.css';
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    const savedContacts = JSON.parse(localStorage.getItem('contacts'));
-    if (!!savedContacts?.length) {
-      setContacts(savedContacts);
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-
-  const handleSubmit = contact => {
-    const isExist = contacts.filter(el => contact.name === el.name);
-    if (!!isExist.length) {
-      alert(`${contact.name} is already in contacts`);
-    } else {
-      setContacts([...contacts, contact]);
-    }
-  };
-
-  const handleFilter = e => {
-    setFilter(e.target.value);
-  };
-
-  const handleDelete = id => {
-    const newContacts = contacts.filter(el => el.id !== id);
-    setContacts(newContacts);
-  };
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
 
   const filterItems = contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter)
@@ -44,12 +21,18 @@ export const App = () => {
   return (
     <div className={s.section}>
       <h1>Phonebook</h1>
-      <ContactForm onSubmit={handleSubmit} />
+      <ContactForm onSubmit={contact => dispatch(addContact(contact))} />
 
       <h2>Contacts</h2>
-      <Filter filter={filter} onFilter={handleFilter} />
+      <Filter
+        filter={filter}
+        onFilter={filter => dispatch(filterContact(filter))}
+      />
       {!!contacts.length && (
-        <ContactList contacts={filterItems} onDelete={handleDelete} />
+        <ContactList
+          contacts={filterItems}
+          onDelete={id => dispatch(deleteContact(id))}
+        />
       )}
     </div>
   );

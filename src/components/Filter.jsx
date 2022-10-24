@@ -7,7 +7,7 @@ const Filter = ({ filter, onFilter }) => {
       <h3>Find contacts by name</h3>
       <input
         className={s.inputFilter}
-        onChange={onFilter}
+        onChange={({ target: { value } }) => onFilter(value)}
         type="text"
         value={filter}
         name="filter"
