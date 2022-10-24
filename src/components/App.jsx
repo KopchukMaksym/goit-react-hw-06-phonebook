@@ -1,12 +1,13 @@
-// import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { addContact, deleteContact } from 'redux/contactSlice';
 import { filterContact } from 'redux/filterSlice';
 import { getContacts, getFilter } from 'redux/selectors';
 import { ContactForm } from './ContactForm';
+
 import ContactList from './ContactList';
 import Filter from './Filter';
+
 import s from './FormStyles.module.css';
 
 export const App = () => {
