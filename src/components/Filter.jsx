@@ -1,13 +1,20 @@
 import PropTypes from 'prop-types';
+import { useDispatch, useSelector } from 'react-redux';
+import { filterContact } from 'redux/filterSlice';
+import { getFilter } from 'redux/selectors';
+
 import s from './FormStyles.module.css';
 
-const Filter = ({ filter, onFilter }) => {
+const Filter = () => {
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+
   return (
     <>
       <h3>Find contacts by name</h3>
       <input
         className={s.inputFilter}
-        onChange={({ target: { value } }) => onFilter(value)}
+        onChange={({ target: { value } }) => dispatch(filterContact(value))}
         type="text"
         value={filter}
         name="filter"
@@ -22,5 +29,4 @@ export default Filter;
 
 Filter.propTypes = {
   filter: PropTypes.string,
-  onFilter: PropTypes.func,
 };

@@ -1,8 +1,14 @@
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from 'redux/contactSlice';
+
 import s from './FormStyles.module.css';
 
-const ContactItem = ({ contact, onDelete }) => {
+const ContactItem = ({ contact }) => {
   const { id, name, number } = contact;
+
+  const dispatch = useDispatch();
+
   return (
     <li className={s.item}>
       <p>
@@ -10,7 +16,7 @@ const ContactItem = ({ contact, onDelete }) => {
       </p>
       <button
         className={s.btnDelete}
-        onClick={() => onDelete(id)}
+        onClick={() => dispatch(deleteContact(id))}
         type="button"
       >
         Delete
@@ -21,7 +27,6 @@ const ContactItem = ({ contact, onDelete }) => {
 export default ContactItem;
 
 ContactItem.propTypes = {
-  onDelete: PropTypes.func,
   contact: PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
